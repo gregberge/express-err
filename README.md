@@ -1,7 +1,7 @@
 # express-err [![Build Status](https://travis-ci.org/neoziro/express-err.png?branch=master)](https://travis-ci.org/neoziro/express-err)
 
 Basic error handler for express.
-This middleware shows errors according to the "accepts" header. It shutdown app in case of uncaught error.
+This middleware shows errors according to the "Accept" header. It will shutdown app in case of uncaught error.
 
 ## Install
 
@@ -29,7 +29,11 @@ app.use(errorHandler.httpError(404));
 app.use(errorHandler());
 ```
 
-## errorHandler options
+## errorHandler(options)
+
+The error handler middleware is used to display errors and shutdown app in case of uncaught error.
+
+The avalaible options are :
 
 ### view
 
