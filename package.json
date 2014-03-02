@@ -1,0 +1,36 @@
+{
+  "name": "express-err",
+  "version": "0.0.0",
+  "description": "Basic error handler for express.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/neoziro/express-err.git"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "error",
+    "handler"
+  ],
+  "author": "Greg Bergé <berge.greg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neoziro/express-err/issues"
+  },
+  "homepage": "https://github.com/neoziro/express-err",
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "supertest": "~0.9.0",
+    "express": "~3.4.8",
+    "chai": "~1.9.0",
+    "sinon-chai": "~2.5.0",
+    "sinon": "~1.8.2"
+  }
+}
