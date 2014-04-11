@@ -1,3 +1,6 @@
+'use strict';
+/* jshint -W117, -W098 */
+
 var express = require('express');
 var request = require('supertest');
 var httpError = require('../lib/http-error');
@@ -9,7 +12,6 @@ describe('httpError middleware', function () {
   beforeEach(function () {
     app = express();
     app.use(function (err, req, res, next) {
-      console.log('ok');
     });
   });
 
