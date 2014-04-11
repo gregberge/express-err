@@ -179,7 +179,7 @@ describe('errorHandler middleware', function () {
     beforeEach(function () {
       app.use(errorHandler({
         'formatters': ['text', 'json'],
-        'defaultFormat': 'text'}));
+        'defaultFormatter': 'text'}));
     });
 
     it('a basic error defaulting to 500', function(done) {
