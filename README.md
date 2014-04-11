@@ -59,6 +59,35 @@ The code used to exit app in case of uncaught exception. Defaults to `1`.
 app.use(errorHandler({ exitCode: 2 }));
 ```
 
+### status
+
+The default HTTP error code. Defaults to '500'.
+
+```js
+app.use(errorHandler({ status: 500 }));
+```
+
+### formatters
+
+The supported error formatters. Defaults to JSON, HTML and plain text.
+
+```js
+app.use(errorHandler({ formatters: ['json', 'text', 'html'] }));
+```
+
+If your express app does not serve HTML, you might want to limit the supported error response types:
+
+```js
+app.use(errorHandler({ formatters: ['json', 'text'] }));
+```
+
+You can also define a default formatter that will be used if your app does not support the 
+request 'Accept' type. Defaults to 'text'.
+
+```js
+app.use(errorHandler({ defaultFormatter: 'json' }));
+```
+
 ## httpError(status, message)
 
 You can use httpError to return a custom error with a status and a message.
