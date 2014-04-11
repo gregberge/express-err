@@ -18,9 +18,6 @@ describe('errorHandler middleware', function () {
     render = sinon.stub().yields();
 
     app = express();
-    app.engine('html', render);
-    app.set('view engine', 'html');
-    app.set('views', path.join(__dirname, 'fixtures', 'views'));
 
     app.get('/rich-error', function (req, res, next) {
       next(richError);
@@ -37,29 +34,42 @@ describe('errorHandler middleware', function () {
     process.exit.restore();
   });
 
-  describe('with a server error and `exitOnUncaughtException` setted to true', function () {
-    beforeEach(function () {
+
+  describe('when a server error occurs', function() {
+    beforeEach(function() {
       richError.status = 500;
-      app.use(errorHandler({ exitOnUncaughtException: true, exitCode: 2 }));
     });
 
-    it('should exit server with `exitCode`', function (done) {
+    it('should exit with `exitCode` when `exitOnUncaughtException` is set to true', function(done) {
+      app.use(errorHandler({ exitOnUncaughtException: true, exitCode: 2 }));
       request(app)
         .get('/rich-error')
-        .end(function (err) {
+        .end(function(err) {
           if (err) return done(err);
           expect(process.exit).to.be.calledWith(2);
           done();
         });
     });
+
+    it('should not exit with an error code when `exitOnUncaughtException` is set to false', function(done) {
+      app.use(errorHandler({ exitOnUncaughtException: false, exitCode: 2 }));
+      request(app)
+        .get('/rich-error')
+        .end(function(err) {
+          if (err) return done(err);
+          expect(process.exit).not.to.be.calledWith(2);
+          done();
+        });
+    });
   });
 
-  describe('json', function () {
+  describe('should render, in JSON', function() {
+
     beforeEach(function () {
-      app.use(errorHandler());
+      app.use(errorHandler({'formatters': ['json']}));
     });
 
-    it('should render a basic error', function (done) {
+    it('a basic error defaulting to 500', function(done) {
       request(app)
         .get('/basic-error')
         .set('Accept', 'application/json')
@@ -67,7 +77,7 @@ describe('errorHandler middleware', function () {
         .end(done);
     });
 
-    it('should render a rich error', function (done) {
+    it('a rich error with a specific HTTP code', function(done) {
       request(app)
         .get('/rich-error')
         .set('Accept', 'application/json')
@@ -76,10 +86,16 @@ describe('errorHandler middleware', function () {
     });
   });
 
-  describe('html', function () {
-    it('should render a basic error', function (done) {
-      app.use(errorHandler());
+  describe('should render, in HTML', function() {
 
+    beforeEach(function () {
+      app.engine('html', render);
+      app.set('view engine', 'html');
+      app.set('views', path.join(__dirname, 'fixtures', 'views'));
+    });
+
+    it('a basic error defaulting to 500', function(done) {
+      app.use(errorHandler({'formatters': ['html']}));
       request(app)
         .get('/basic-error')
         .set('Accept', 'text/html')
@@ -96,9 +112,8 @@ describe('errorHandler middleware', function () {
         });
     });
 
-    it('should render a rich error', function (done) {
-      app.use(errorHandler());
-
+    it('a rich error', function (done) {
+      app.use(errorHandler({'formatters': ['html']}));
       request(app)
         .get('/rich-error')
         .set('Accept', 'text/html')
@@ -115,8 +130,11 @@ describe('errorHandler middleware', function () {
         });
     });
 
-    it('should use a custom view', function (done) {
-      app.use(errorHandler({ view: 'big-error' }));
+    it('a rich error using a custom view', function (done) {
+      app.use(errorHandler({
+        view: 'big-error',
+        formatters: ['html']
+      }));
 
       request(app)
         .get('/rich-error')
@@ -131,12 +149,13 @@ describe('errorHandler middleware', function () {
     });
   });
 
-  describe('text', function () {
+  describe('should render, in plain text', function() {
+
     beforeEach(function () {
-      app.use(errorHandler());
+      app.use(errorHandler({'formatters': ['text']}));
     });
 
-    it('should render a basic error', function (done) {
+    it('a basic error defaulting to 500', function(done) {
       request(app)
         .get('/basic-error')
         .set('Accept', 'text/plain')
@@ -144,7 +163,7 @@ describe('errorHandler middleware', function () {
         .end(done);
     });
 
-    it('should render a rich error', function (done) {
+    it('a rich error with a specific HTTP code', function(done) {
       request(app)
         .get('/rich-error')
         .set('Accept', 'text/plain')
@@ -152,4 +171,29 @@ describe('errorHandler middleware', function () {
         .end(done);
     });
   });
+
+  describe('should render in the default format if the response format is not supported', function() {
+    beforeEach(function () {
+      app.use(errorHandler({
+        'formatters': ['text', 'json'],
+        'defaultFormat': 'text'}));
+    });
+
+    it('a basic error defaulting to 500', function(done) {
+      request(app)
+        .get('/basic-error')
+        .set('Accept', 'text/html')
+        .expect(500, 'Internal Server Error')
+        .end(done);
+    });
+
+    it('a rich error with a specific HTTP code', function(done) {
+      request(app)
+        .get('/rich-error')
+        .set('Accept', 'text/html')
+        .expect(418, 'Rich error message.')
+        .end(done);
+    });
+  });
+
 });
