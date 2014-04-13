@@ -1,3 +1,6 @@
+'use strict';
+/* jshint -W117 */
+
 var path = require('path');
 var express = require('express');
 var request = require('supertest');
