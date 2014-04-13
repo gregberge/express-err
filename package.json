@@ -1,6 +1,6 @@
 {
   "name": "express-err",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Basic error handler for express.",
   "main": "index.js",
   "directories": {
