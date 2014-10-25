@@ -1,4 +1,8 @@
-# express-err [![Build Status](https://travis-ci.org/neoziro/express-err.png?branch=master)](https://travis-ci.org/neoziro/express-err)
+# express-err
+
+[![Build Status](https://travis-ci.org/neoziro/express-err.svg?branch=master)](https://travis-ci.org/neoziro/express-err)
+[![Dependency Status](https://david-dm.org/neoziro/express-err.svg?theme=shields.io)](https://david-dm.org/neoziro/express-err)
+[![devDependency Status](https://david-dm.org/neoziro/express-err/dev-status.svg?theme=shields.io)](https://david-dm.org/neoziro/express-err#info=devDependencies)
 
 Basic error handler for express.
 This middleware shows errors according to the "Accept" header. It will shutdown app in case of uncaught error.
