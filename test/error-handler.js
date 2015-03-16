@@ -1,7 +1,7 @@
 var path = require('path');
 var express = require('express');
 var request = require('supertest');
-var errorHandler = require('../lib/error-handler');
+var errorHandler = require('../');
 var sinon = require('sinon');
 var expect = require('chai').use(require('sinon-chai')).expect;
 

@@ -85,16 +85,34 @@ If your express app does not serve HTML, you might want to limit the supported e
 app.use(errorHandler({ formatters: ['json', 'text'] }));
 ```
 
-You can also define a default formatter that will be used if your app does not support the 
+You can also define a default formatter that will be used if your app does not support the
 request 'Accept' type. Defaults to 'text'.
 
 ```js
 app.use(errorHandler({ defaultFormatter: 'json' }));
 ```
 
-## httpError(status, message)
+## httpError(status, [message])
 
-You can use httpError to return a custom error with a status and a message.
+You can use httpError to return a custom error with a status and a message, if you don't provide a message, it will automatically use the HTTP status.
+
+```js
+var httpError = require('express-err').httpError;
+
+app.use(httpError(404));
+```
+
+## new HttpError(status, [message])
+
+You can create a custom HttpError with a status and a message, if you don't provide a message, it will automatically use the HTTP status.
+
+```js
+var HttpError = require('express-err').HttpError;
+
+app.use(function (req, res, next) {
+  next(new HttpError(404, 'Bad way'));
+});
+```
 
 ## License
 
