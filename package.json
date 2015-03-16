@@ -26,11 +26,11 @@
   },
   "homepage": "https://github.com/neoziro/express-err",
   "devDependencies": {
-    "chai": "^1.9.2",
+    "chai": "^2.1.2",
     "express": "^4.10.0",
     "mocha": "^2.0.1",
     "sinon": "^1.10.3",
-    "sinon-chai": "^2.6.0",
+    "sinon-chai": "^2.7.0",
     "supertest": "^0.14.0"
   }
 }
