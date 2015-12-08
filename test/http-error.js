@@ -7,16 +7,18 @@ var expect = require('chai').expect;
 describe('HttpError constructor', function () {
   it('should create an error with message and status', function () {
     var error = new HttpError(401, 'my message');
-    expect(error).to.have.property('status', 401);
+    expect(error).to.have.property('name', 'HttpError');
     expect(error).to.have.property('message', 'my message');
     expect(error).to.have.property('stack');
+    expect(error).to.have.property('status', 401);
   });
 
   it('should default message to http status', function () {
     var error = new HttpError(404);
-    expect(error).to.have.property('status', 404);
+    expect(error).to.have.property('name', 'HttpError');
     expect(error).to.have.property('message', 'Not Found');
     expect(error).to.have.property('stack');
+    expect(error).to.have.property('status', 404);
   });
 });
 
@@ -32,9 +34,10 @@ describe('httpError middleware', function () {
 
     app.use(function (err, req, res, next) {
       expect(err).to.be.instanceof(Error);
-      expect(err).to.have.property('status', 404);
+      expect(err).to.have.property('name', 'HttpError');
       expect(err).to.have.property('message', 'Not Found');
       expect(err).to.have.property('stack');
+      expect(err).to.have.property('status', 404);
       done();
     });
 
@@ -46,9 +49,10 @@ describe('httpError middleware', function () {
 
     app.use(function (err, req, res, next) {
       expect(err).to.be.instanceof(Error);
-      expect(err).to.have.property('status', 408);
+      expect(err).to.have.property('name', 'HttpError');
       expect(err).to.have.property('message', 'Custom error message.');
       expect(err).to.have.property('stack');
+      expect(err).to.have.property('status', 408);
       done();
     });
 
