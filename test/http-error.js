@@ -9,12 +9,14 @@ describe('HttpError constructor', function () {
     var error = new HttpError(401, 'my message');
     expect(error).to.have.property('status', 401);
     expect(error).to.have.property('message', 'my message');
+    expect(error).to.have.property('stack');
   });
 
   it('should default message to http status', function () {
     var error = new HttpError(404);
     expect(error).to.have.property('status', 404);
     expect(error).to.have.property('message', 'Not Found');
+    expect(error).to.have.property('stack');
   });
 });
 
@@ -32,6 +34,7 @@ describe('httpError middleware', function () {
       expect(err).to.be.instanceof(Error);
       expect(err).to.have.property('status', 404);
       expect(err).to.have.property('message', 'Not Found');
+      expect(err).to.have.property('stack');
       done();
     });
 
@@ -45,6 +48,7 @@ describe('httpError middleware', function () {
       expect(err).to.be.instanceof(Error);
       expect(err).to.have.property('status', 408);
       expect(err).to.have.property('message', 'Custom error message.');
+      expect(err).to.have.property('stack');
       done();
     });
 
