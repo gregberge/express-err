@@ -4,7 +4,7 @@
   "description": "Basic error handler for express.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "eslint . && jest",
     "prepublish": "babel src/ -d lib/"
   },
   "repository": {
