@@ -10,49 +10,41 @@ This middleware shows errors according to the "Accept" header. It will shutdown 
 ## Install
 
 ```
-npm install express-err
+yarn add express-err
 ```
 
 ## Usage
 
 ```js
-var express = require('express');
-var errorHandler = require('express-err');
+import express from 'express'
+import errorHandler, { httpError } from 'express-err'
 
-var app = express();
+const app = express()
 
 // Basic route.
-app.get('/', function (req, res) {
-  res.send('Hello world!');
-});
+app.get('/', (req, res) => {
+  res.send('Hello world!')
+})
 
 // Redirect other routes to 404.
-app.use(errorHandler.httpError(404));
+app.use(httpError(404))
 
 // Handle errors.
-app.use(errorHandler());
+app.use(errorHandler())
 ```
 
 ## errorHandler(options)
 
 The error handler middleware is used to display errors and shutdown app in case of uncaught error.
 
-The avalaible options are :
-
-### view
-
-Default view to render in case of error. Defaults to `"view"`.
-
-```js
-app.use(errorHandler({ view: 'my/custom/error-view' }));
-```
+The avalaible options are:
 
 ### exitOnUncaughtException
 
 Tell to the process to exit on uncaught exceptions. Defaults to `true`.
 
 ```js
-app.use(errorHandler({ exitOnUncaughtException: false }));
+app.use(errorHandler({ exitOnUncaughtException: false }))
 ```
 
 ### exitCode
@@ -60,36 +52,33 @@ app.use(errorHandler({ exitOnUncaughtException: false }));
 The code used to exit app in case of uncaught exception. Defaults to `1`.
 
 ```js
-app.use(errorHandler({ exitCode: 2 }));
+app.use(errorHandler({ exitCode: 2 }))
 ```
 
-### status
+### defaultStatusCode
 
-The default HTTP error code. Defaults to '500'.
+The default HTTP error code. Defaults to `500`.
 
 ```js
-app.use(errorHandler({ status: 500 }));
+app.use(errorHandler({ status: 503 }))
 ```
 
 ### formatters
 
-The supported error formatters. Defaults to JSON, HTML and plain text.
+The error handler come with some preconfigured formatters, one for "json", "text" and "html".
+It's possible to provide your own formatters:
 
 ```js
-app.use(errorHandler({ formatters: ['json', 'text', 'html'] }));
-```
+import { text } from 'express-err/lib/formatters'
 
-If your express app does not serve HTML, you might want to limit the supported error response types:
-
-```js
-app.use(errorHandler({ formatters: ['json', 'text'] }));
-```
-
-You can also define a default formatter that will be used if your app does not support the
-request 'Accept' type. Defaults to 'text'.
-
-```js
-app.use(errorHandler({ defaultFormatter: 'json' }));
+app.use(errorHandler({
+  formatters: {
+    json(err, req, res, next) {
+      res.send({ error: true })
+    },
+    default: text,
+  }
+}))
 ```
 
 ## httpError(status, [message])
@@ -97,9 +86,9 @@ app.use(errorHandler({ defaultFormatter: 'json' }));
 You can use httpError to return a custom error with a status and a message, if you don't provide a message, it will automatically use the HTTP status.
 
 ```js
-var httpError = require('express-err').httpError;
+import { httpError } from 'express-err'
 
-app.use(httpError(404));
+app.use(httpError(404))
 ```
 
 ## new HttpError(status, [message])
@@ -107,11 +96,11 @@ app.use(httpError(404));
 You can create a custom HttpError with a status and a message, if you don't provide a message, it will automatically use the HTTP status.
 
 ```js
-var HttpError = require('express-err').HttpError;
+import { HttpError } from 'express-err'
 
-app.use(function (req, res, next) {
-  next(new HttpError(404, 'Bad way'));
-});
+app.use((req, res, next) => {
+  next(new HttpError(404, 'Bad way'))
+})
 ```
 
 ## License
