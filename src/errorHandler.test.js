@@ -19,12 +19,16 @@ describe('errorHandler', () => {
       next(new Error('My error'))
     })
 
-    app.use(errorHandler({
-      exitOnUncaughtException: false,
-      defaultStatusCode: 501,
-    }))
+    app.use(
+      errorHandler({
+        exitOnUncaughtException: false,
+        defaultStatusCode: 501,
+      }),
+    )
 
-    const response = await request(app).get('/').set('Accept', 'blabla')
+    const response = await request(app)
+      .get('/')
+      .set('Accept', 'blabla')
     expect(response.statusCode).toBe(501)
     expect(response.text).toBe('My error')
   })
@@ -36,7 +40,9 @@ describe('errorHandler', () => {
 
     app.use(errorHandler({ exitOnUncaughtException: false }))
 
-    const response = await request(app).get('/').set('Accept', 'blabla')
+    const response = await request(app)
+      .get('/')
+      .set('Accept', 'blabla')
     expect(response.statusCode).toBe(500)
     expect(response.text).toBe('My error')
   })
@@ -48,7 +54,9 @@ describe('errorHandler', () => {
 
     app.use(errorHandler({ exitOnUncaughtException: false }))
 
-    const response = await request(app).get('/').set('Accept', 'application/json')
+    const response = await request(app)
+      .get('/')
+      .set('Accept', 'application/json')
     expect(response.body.error).toEqual({
       message: 'My error',
       code: null,
@@ -62,7 +70,9 @@ describe('errorHandler', () => {
 
     app.use(errorHandler({ exitOnUncaughtException: false }))
 
-    const response = await request(app).get('/').set('Accept', 'text/plain')
+    const response = await request(app)
+      .get('/')
+      .set('Accept', 'text/plain')
     expect(response.text).toBe('My error')
   })
 
@@ -73,7 +83,9 @@ describe('errorHandler', () => {
 
     app.use(errorHandler({ exitOnUncaughtException: false }))
 
-    const response = await request(app).get('/').set('Accept', 'text/html')
+    const response = await request(app)
+      .get('/')
+      .set('Accept', 'text/html')
     expect(response.text).toBe(`<!DOCTYPE html>
 <html>
   <head>

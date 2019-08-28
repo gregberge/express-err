@@ -4,8 +4,4 @@ import HttpError from './HttpError'
 import httpError from './httpErrorMiddleware'
 
 export default errorHandler
-export {
-  formatters,
-  HttpError,
-  httpError,
-}
+export { formatters, HttpError, httpError }

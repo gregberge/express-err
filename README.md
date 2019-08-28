@@ -71,14 +71,16 @@ It's possible to provide your own formatters:
 ```js
 import { text } from 'express-err/lib/formatters'
 
-app.use(errorHandler({
-  formatters: {
-    json(err, req, res, next) {
-      res.send({ error: true })
+app.use(
+  errorHandler({
+    formatters: {
+      json(err, req, res, next) {
+        res.send({ error: true })
+      },
+      default: text,
     },
-    default: text,
-  }
-}))
+  }),
+)
 ```
 
 ## httpError(status, [message])

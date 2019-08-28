@@ -15,7 +15,9 @@ describe('httpErrorMiddleware', () => {
 
     app.use(errorHandler({ exitOnUncaughtException: false }))
 
-    const response = await request(app).get('/').set('Accept', 'application/json')
+    const response = await request(app)
+      .get('/')
+      .set('Accept', 'application/json')
     expect(response.statusCode).toBe(401)
     expect(response.body).toEqual({
       error: {

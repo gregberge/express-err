@@ -5,7 +5,8 @@ const errorHandler = ({
   formatters = { json, html, text, default: text },
   exitOnUncaughtException = true,
   exitCode = 1,
-} = {}) => (err, req, res, next) => { // eslint-disable-line no-unused-vars
+} = {}) => (err, req, res, next) => {
+  // eslint-disable-line no-unused-vars
   const candidates = [err.statusCode, defaultStatusCode]
   const statusCode = candidates.find(Number.isInteger)
 
@@ -13,11 +14,13 @@ const errorHandler = ({
     res.once('finish', process.exit.bind(process, exitCode))
   }
 
-  const bindedFormatters = Object.entries(formatters)
-    .reduce((acc, [name, format]) => ({
+  const bindedFormatters = Object.entries(formatters).reduce(
+    (acc, [name, format]) => ({
       ...acc,
       [name]: () => format(err, req, res, next),
-    }), {})
+    }),
+    {},
+  )
 
   res.status(statusCode).format(bindedFormatters)
 }

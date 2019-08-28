@@ -7,14 +7,27 @@ const errorToJson = ({ message = null, name, code = null }) => ({
   },
 })
 
-export const json = (err, req, res, next) => // eslint-disable-line no-unused-vars
-  res.send(errorToJson(err))
+export const json = (
+  err,
+  req,
+  res,
+  next, // eslint-disable-line no-unused-vars
+) => res.send(errorToJson(err))
 
-export const html = (err, req, res, next) => // eslint-disable-line no-unused-vars
+export const html = (
+  err,
+  req,
+  res,
+  next, // eslint-disable-line no-unused-vars
+) =>
   res.render('error', {
     error: err,
     statusMessage: STATUS_CODES[res.statusCode],
   })
 
-export const text = (err, req, res, next) => // eslint-disable-line no-unused-vars
-  res.send(err.message || err.name)
+export const text = (
+  err,
+  req,
+  res,
+  next, // eslint-disable-line no-unused-vars
+) => res.send(err.message || err.name)
