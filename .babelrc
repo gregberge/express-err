@@ -1,13 +1,13 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": 7,
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": 8
+        }
       }
-    }]
+    ]
   ],
-  "plugins": [
-    "transform-object-rest-spread",
-    "transform-class-properties"
-  ]
+  "plugins": ["@babel/plugin-proposal-class-properties"]
 }
